@@ -61,6 +61,7 @@ php scripts/tenant.php list            # 另有 disable / enable <租户>
 OPENHUNTER_TENANT=acme php scripts/set_setting.php ocr.openai.api_key sk-xxxx   # 给指定租户配置（CLI 默认 default）
 ```
 
+- **按量计费**：软件免费，用量按租户出账。`php scripts/usage_report.php --month=2026-10 [--format=json|csv]` 列出每个租户的 AI 调用数 / token / 折算费用，以及存储用量（简历与附件字节数）。
 - 初次安装 `install.php` 建的是 `default` 租户；`--tenant=<标识>` 可指定别的名字。
 - 候选人投递链接末尾带 `?t=<租户>`，页面里复制出来的链接已自动带上。
 
@@ -136,6 +137,7 @@ php scripts/tenant.php list            # also: disable / enable <tenant>
 OPENHUNTER_TENANT=acme php scripts/set_setting.php ocr.openai.api_key sk-xxxx   # configure a specific tenant (CLI defaults to `default`)
 ```
 
+- **Usage-based billing**: the software is free; usage is metered per tenant. `php scripts/usage_report.php --month=2026-10 [--format=json|csv]` lists each tenant's AI calls / tokens / estimated cost and storage (bytes of resumes and attachments).
 - First-time `install.php` creates the `default` tenant; pass `--tenant=<id>` for another name.
 - Candidate apply links end with `?t=<tenant>`; links copied from the UI already include it.
 
