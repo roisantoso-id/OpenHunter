@@ -10,9 +10,11 @@ declare namespace API {
     team_id?: number;
     team_name?: string;
     avatar?: string;
+    tenant?: string;
   }
 
   interface LoginParams {
+    tenant?: string;
     username: string;
     password: string;
   }

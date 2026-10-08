@@ -84,7 +84,7 @@ const Threads: React.FC<{ t: T; industries: Record<string, number>; onResume: (i
         onMouseEnter={() => !pinned && setHover(bundle(col, n.key, n.label))}
         onClick={(e) => { e.stopPropagation(); setPinned(bundle(col, n.key, n.label)); }}>
         {col === 's' ? <rect x={x - 3} y={y - 1.6} width={6} height={3.2} fill={W.DATA} opacity={0.85} /> : <circle cx={x} cy={y} r={3.4} fill={n.ind ? fill : W.FAINT} />}
-        {n.ind && <image href={`/recruit/art/ind-${n.ind}.jpg`} x={x + 8} y={y - 10} width={20} height={20} />}
+        {n.ind && <image href={`/recruit/art/ind-${n.ind}.svg`} x={x + 8} y={y - 10} width={20} height={20} />}
         <text x={tx} y={y + 4} fontSize={col === 's' ? 11 : 12.5} fontWeight={col === 's' ? 500 : 700} fill={col === 's' ? W.LAB : fill} textAnchor={anchor}>
           {String(n.label).slice(0, col === 's' ? 34 : 20)} <tspan fill={W.MUT} fontWeight={500}>{n.n}</tspan>
         </text>

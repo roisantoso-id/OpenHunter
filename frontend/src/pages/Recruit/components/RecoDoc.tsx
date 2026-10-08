@@ -91,7 +91,7 @@ const RecoDoc = React.forwardRef<HTMLDivElement, Props>(({ kind, content, labels
       fontFamily: 'Arial, "PingFang SC", "Microsoft YaHei", sans-serif', boxShadow: '0 0 0 1px #f0f0f0', margin: '0 auto' }}>
       {/* 抬头 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, borderBottom: `2px solid ${BRAND}`, paddingBottom: 8 }}>
-        <img src={lb.logo_url || '/recruit/art/mark-64.jpg'} alt="" style={{ width: 46, height: 46 }} crossOrigin="anonymous" />
+        <img src={lb.logo_url || '/recruit/art/mark-64.svg'} alt="" style={{ width: 46, height: 46 }} crossOrigin="anonymous" />
         <div>
           <div style={{ color: BRAND, fontSize: 20, fontWeight: 700, lineHeight: 1.2 }}>
             {lb.company}{!!lb.company_en && <span style={{ color: '#595959', fontSize: 11, fontWeight: 400, marginLeft: 8 }}>{lb.company_en}</span>}

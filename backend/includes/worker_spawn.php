@@ -133,7 +133,7 @@ function workerSpawn(?PDO $pdo, string $scriptPath, array $args, string $tag): a
                 'error' => '找不到可用的 CLI php（已试: ' . implode('; ', $r['tried'])
                          . '）。可在系统设置 ' . WORKER_PHP_BIN_SETTING . ' 显式指定路径'];
     }
-    $cmd = escapeshellarg($r['bin']) . ' ' . escapeshellarg($scriptPath);
+    $cmd = 'OPENHUNTER_TENANT=' . escapeshellarg(Tenant::slug()) . ' ' . escapeshellarg($r['bin']) . ' ' . escapeshellarg($scriptPath);
     foreach ($args as $a) $cmd .= ' ' . escapeshellarg((string)$a);
     $setsid = trim((string)@shell_exec('command -v setsid 2>/dev/null'));
     // 输出**追加进日志**而不是丢弃：静默失败是这次事故最贵的部分。

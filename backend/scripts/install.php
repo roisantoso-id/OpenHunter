@@ -6,6 +6,9 @@
  *   php scripts/install.php                                   # dry-run，只打印将做什么
  *   php scripts/install.php --apply                           # 执行
  *   php scripts/install.php --apply --admin=admin --password=xxx --name="Admin"   # 同时建管理员（已有同名账号则跳过）
+ *
+ * 多租户：每个租户一个独立库。默认装 `default` 租户；开新租户见 scripts/tenant.php（内部就是调本脚本）：
+ *   php scripts/install.php --apply --tenant=acme --tenant-name="Acme Recruiting" --admin=boss --password=xxx
  */
 
 $root = dirname(__DIR__);
@@ -13,9 +16,13 @@ require_once $root . '/includes/bootstrap.php';
 
 $args = [];
 foreach (array_slice($argv, 1) as $a) {
-    if (preg_match('/^--([a-z_]+)(?:=(.*))?$/', $a, $m)) $args[$m[1]] = $m[2] ?? true;
+    if (preg_match('/^--([a-z_-]+)(?:=(.*))?$/', $a, $m)) $args[$m[1]] = $m[2] ?? true;
 }
 $apply = !empty($args['apply']);
+$tenantSlug = strtolower((string)($args['tenant'] ?? ohEnv('OPENHUNTER_TENANT', 'default')));
+if (!Tenant::valid($tenantSlug)) { echo "❌ --tenant 不合法（小写字母 / 数字 / 下划线，2-31 位，不能叫 control）\n"; exit(1); }
+if ($apply) Tenant::register($tenantSlug, (string)($args['tenant-name'] ?? $tenantSlug));
+Tenant::set($tenantSlug);
 $pdo = Database::getInstance()->getConnection();
 $my = dbIsMysql();
 $pk = $my ? 'INT AUTO_INCREMENT PRIMARY KEY' : 'INTEGER PRIMARY KEY AUTOINCREMENT';
@@ -23,7 +30,7 @@ $str = fn(int $n) => $my ? "VARCHAR($n)" : 'TEXT';
 $tail = $my ? ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci' : '';
 $now = $my ? 'CURRENT_TIMESTAMP' : 'CURRENT_TIMESTAMP';
 
-echo "=== OpenHunter install " . ($apply ? '[APPLY]' : '[DRY-RUN]') . " (" . ($my ? 'mysql' : 'sqlite') . ") ===\n\n";
+echo "=== OpenHunter install " . ($apply ? '[APPLY]' : '[DRY-RUN]') . " (" . ($my ? 'mysql' : 'sqlite') . ", tenant={$tenantSlug}) ===\n\n";
 
 $tables = [
     'users' => "CREATE TABLE users (

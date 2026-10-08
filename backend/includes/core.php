@@ -36,7 +36,7 @@ function tokenSecret(): string {
 }
 
 function generateToken($userId, int $ttl = 86400) {
-    $body = b64urlEncode(json_encode(['user_id' => (int)$userId, 'exp' => time() + $ttl, 'iat' => time()]));
+    $body = b64urlEncode(json_encode(['user_id' => (int)$userId, 'tn' => Tenant::slug(), 'exp' => time() + $ttl, 'iat' => time()]));
     return $body . '.' . b64urlEncode(hash_hmac('sha256', $body, tokenSecret(), true));
 }
 
@@ -57,7 +57,27 @@ function verifyTokenString($token) {
     $payload = json_decode(b64urlDecode($body), true);
     if (!$payload || !isset($payload['user_id'], $payload['exp'])) return null;
     if ($payload['exp'] < time()) return null;
+    // token 只在签发它的租户里有效（user_id 在别的租户库里是别人）
+    if (($payload['tn'] ?? '') !== Tenant::slug()) return null;
     return $payload['user_id'];
+}
+
+/** token 里声明的租户（不校验签名以外的东西）。handler 靠它在连库之前先定下租户；后续 verifyTokenString 会二次核对 */
+function tokenTenant(?string $token = null): ?string {
+    if ($token === null) {
+        $header = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
+        if (!preg_match('/^Bearer\s+(.+)$/i', $header, $m)) return null;
+        $token = $m[1];
+    }
+    $dot = strpos($token, '.');
+    if ($dot === false || $dot === 0) return null;
+    try {
+        $expect = hash_hmac('sha256', substr($token, 0, $dot), tokenSecret(), true);
+    } catch (RuntimeException $e) { return null; }
+    if (!hash_equals($expect, b64urlDecode(substr($token, $dot + 1)))) return null;
+    $payload = json_decode(b64urlDecode(substr($token, 0, $dot)), true);
+    $tn = is_array($payload) ? (string)($payload['tn'] ?? '') : '';
+    return Tenant::valid($tn) ? $tn : null;
 }
 
 function verifyToken() {
@@ -156,7 +176,7 @@ function handleLogin($pdo, $input) {
     jsonResponse([
         'success' => true,
         'token' => generateToken((int)$u['id']),
-        'user' => ['id' => (int)$u['id'], 'username' => $u['username'], 'name' => $u['name'], 'role' => $u['role'], 'email' => $u['email']],
+        'user' => ['id' => (int)$u['id'], 'username' => $u['username'], 'name' => $u['name'], 'role' => $u['role'], 'email' => $u['email'], 'tenant' => Tenant::slug()],
     ]);
 }
 
@@ -167,6 +187,7 @@ function handleCurrentUser($pdo) {
     $user = $s->fetch();
     if (!$user) jsonResponse(['success' => false, 'errorMessage' => 'User not found'], 404);
     $user['id'] = (int)$user['id'];
+    $user['tenant'] = Tenant::slug();
     $user['modules'] = userModules($pdo, $userId);
     // 企业库查看名单（recruit.company.viewer_ids）：前端 access.canViewRecruitCompanies 看这个
     require_once __DIR__ . '/recruit_company_acl.php';

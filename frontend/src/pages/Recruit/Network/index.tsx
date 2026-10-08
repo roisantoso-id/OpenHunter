@@ -88,7 +88,7 @@ const PersonMap: React.FC<{ id: number | null; t: T; onClose: () => void; onPers
       const cur = !!n.work.current;
       const pos = side(a);
       data.push({ id: n.id, name: n.label, ...at(a, many && i % 2 ? 0.72 : 1), raw: n,   // 公司多时内外两圈交错
-        symbol: `image:///recruit/art/ind-${n.industry || 'other'}.jpg`, symbolSize: 46,
+        symbol: `image:///recruit/art/ind-${n.industry || 'other'}.svg`, symbolSize: 46,
         label: { show: true, position: pos || 'top', distance: 4, color: '#262626', fontSize: 12, fontWeight: 600, align: pos === 'left' ? 'right' : pos === 'right' ? 'left' : 'center',
           formatter: `${String(n.label).slice(0, 20)}\n{s|${cur ? t('pages.recruit.co.bucket.current') : t('pages.recruit.co.bucket.former')}${n.work.months ? ' · ' + t('pages.recruit.co.months', { n: n.work.months }) : ''}}`,
           rich: { s: { color: cur ? CURRENT : FORMER, fontSize: 11, fontWeight: 500, padding: [2, 0, 0, 0] } } } });

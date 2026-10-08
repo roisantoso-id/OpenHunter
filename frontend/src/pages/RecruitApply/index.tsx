@@ -46,6 +46,7 @@ const JdText: React.FC<{ text: string }> = ({ text }) => {
 
 const RecruitApply: React.FC = () => {
   const { token = '' } = useParams<{ token: string }>();
+  const tenant = new URLSearchParams(window.location.search).get('t') || '';
   const [lang, setLang] = useState<string>(() => {
     const q = new URLSearchParams(window.location.search).get('lang') || '';
     return LOCALE[q] ? q : 'id';
@@ -70,7 +71,7 @@ const RecruitApply: React.FC = () => {
     let tries = 0;
     const hit = byLang.current[lang];
     if (hit) { setJob(hit); setLoading(false); return () => { alive = false; }; }
-    const load = (first: boolean) => recruitApplyInfo(token, lang, first).then((r: any) => {
+    const load = (first: boolean) => recruitApplyInfo(token, lang, first, tenant).then((r: any) => {
       if (!alive) return;
       if (!r?.success) { setInvalid(true); return; }
       setJob(r.data);
@@ -95,6 +96,7 @@ const RecruitApply: React.FC = () => {
       fd.append('consent', v.consent ? '1' : '');
       fd.append('website', v.website || '');   // 隐藏字段：人看不见
       fd.append('lang', lang);
+      if (tenant) fd.append('tenant', tenant);
       fd.append('file', file);
       const r: any = await recruitApplySubmit(fd);
       if (r?.success) setDone(r.data.status === 'duplicate' ? 'duplicate' : 'added');
@@ -109,7 +111,7 @@ const RecruitApply: React.FC = () => {
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src="/recruit/art/mark-64.jpg" alt="" style={{ width: 34, height: 34, borderRadius: 9 }} />
+            <img src="/recruit/art/mark-64.svg" alt="" style={{ width: 34, height: 34, borderRadius: 9 }} />
             <Text strong style={{ fontSize: 16 }}>{t('pages.recruit.apply.brand')}</Text>
           </div>
           <Segmented size="small" value={lang} onChange={(v) => setLang(String(v))}

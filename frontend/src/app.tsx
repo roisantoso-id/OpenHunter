@@ -5,9 +5,9 @@ import { GlobalOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import React from 'react';
 import { API_BASE_URL } from '@/services/config';
 
-/** Hand-drawn icons for the recruiting sub-menu (public/recruit/art/nav-*.jpg) */
+/** Icons for the recruiting sub-menu (public/recruit/art/nav-*.svg) */
 const RecruitNavIcon: React.FC<{ name: string }> = ({ name }) => (
-  <img src={`/recruit/art/nav-${name}.jpg`} alt="" className="anticon"
+  <img src={`/recruit/art/nav-${name}.svg`} alt="" className="anticon"
     style={{ width: 16, height: 16, objectFit: 'contain', mixBlendMode: 'multiply', verticalAlign: '-3px' }} />
 );
 
@@ -102,7 +102,7 @@ const UserDropdown: React.FC<{ currentUser?: API.CurrentUser; onLogout: () => vo
 
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => ({
   title: 'OpenHunter',
-  logo: '/recruit/art/mark-64.jpg',
+  logo: '/recruit/art/mark-64.svg',
   layout: 'mix',
   fixedHeader: true,
   splitMenus: false,
@@ -116,7 +116,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   },
   /* Top-level recruiting menu uses the hand-drawn badge; SolutionOutlined in .umirc.ts stays as fallback */
   menuDataRender: (data: any[]) => data.map((it: any) => (it?.path === '/recruit'
-    ? { ...it, icon: <img src="/recruit/art/mark-64.jpg" alt="" style={{ width: 18, height: 18, borderRadius: '50%', verticalAlign: '-4px' }} /> }
+    ? { ...it, icon: <img src="/recruit/art/mark-64.svg" alt="" style={{ width: 18, height: 18, borderRadius: '50%', verticalAlign: '-4px' }} /> }
     : it)),
   token: {
     header: { colorBgHeader: '#fff', heightLayoutHeader: 48 },

@@ -1,5 +1,5 @@
 import { login } from '@/services/api';
-import { LockOutlined, UserOutlined, GlobalOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined, GlobalOutlined, TeamOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { useIntl, getLocale, setLocale } from '@umijs/max';
 import { Dropdown, message } from 'antd';
@@ -16,6 +16,8 @@ const Login: React.FC = () => {
       const res = await login(values);
       if (res.success && res.token) {
         localStorage.setItem('token', res.token);
+        if (values.tenant) localStorage.setItem('oh_tenant', values.tenant.trim().toLowerCase());
+        else if (res.user?.tenant) localStorage.setItem('oh_tenant', res.user.tenant);
         message.success(t('pages.login.success'));
         const redirect = new URL(window.location.href).searchParams.get('redirect');
         // Only same-origin relative paths, never an absolute URL from the query string
@@ -40,12 +42,18 @@ const Login: React.FC = () => {
       </div>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 80 }}>
         <LoginForm
-          logo={<img alt="" src="/recruit/art/mark-64.jpg" style={{ borderRadius: '50%' }} />}
+          logo={<img alt="" src="/recruit/art/mark-64.svg" style={{ borderRadius: '50%' }} />}
           title="OpenHunter"
           subTitle={t('pages.login.subtitle')}
           submitter={{ searchConfig: { submitText: t('pages.login.submit') } }}
           onFinish={async (values) => { await handleSubmit(values as API.LoginParams); }}
         >
+          <ProFormText
+            name="tenant"
+            initialValue={new URL(window.location.href).searchParams.get('tenant') || (() => { try { return localStorage.getItem('oh_tenant') || ''; } catch { return ''; } })()}
+            fieldProps={{ size: 'large', prefix: <TeamOutlined />, autoComplete: 'organization' }}
+            placeholder={t('pages.login.tenant.placeholder')}
+          />
           <ProFormText
             name="username"
             fieldProps={{ size: 'large', prefix: <UserOutlined />, autoComplete: 'username' }}

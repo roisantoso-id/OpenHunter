@@ -4,6 +4,7 @@ export default {
   'pages.login.submit': "Masuk",
   'pages.login.success': "Berhasil masuk!",
   'pages.login.failure': "Gagal masuk, periksa nama pengguna dan kata sandi",
+  'pages.login.tenant.placeholder': "ID organisasi (kosongkan jika hanya satu)",
   'pages.login.username.placeholder': "Masukkan nama pengguna",
   'pages.login.username.required': "Masukkan nama pengguna",
   'pages.login.password.placeholder': "Masukkan kata sandi",

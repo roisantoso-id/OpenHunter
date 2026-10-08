@@ -4,6 +4,7 @@ export default {
   'pages.login.submit': "Sign In",
   'pages.login.success': "Login successful!",
   'pages.login.failure': "Login failed, please check username and password",
+  'pages.login.tenant.placeholder': "Organization ID (optional if you have only one)",
   'pages.login.username.placeholder': "Enter your username",
   'pages.login.username.required': "Please enter username",
   'pages.login.password.placeholder': "Enter your password",

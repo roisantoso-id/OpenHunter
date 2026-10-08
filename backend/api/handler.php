@@ -16,8 +16,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') { http_response_code(204);
 
 require_once __DIR__ . '/../includes/bootstrap.php';
 
-$pdo = Database::getInstance()->getConnection();
-
 $action = (string)($_GET['action'] ?? '');
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $input = [];
@@ -30,8 +28,27 @@ if ($method === 'POST') {
     }
 }
 
-// 免登录：登录本身 + 职位投递链接（候选人免登录看职位、投简历；handler 内只认 token，限流见 includes/recruit_apply.php）
+// 租户：登录 / 投递页（免登录）按请求里的 tenant（只有一个租户时可省略）；其余一律取 token 里的 tn，**不信前端传的值**
 $publicActions = ['login', 'recruitApplyInfo', 'recruitApplySubmit'];
+try {
+    if (in_array($action, $publicActions, true)) {
+        $tn = strtolower(trim((string)($input['tenant'] ?? $_GET['tenant'] ?? $_POST['tenant'] ?? ''))) ?: Tenant::onlyOne();
+        if (!$tn || !Tenant::find($tn)) {
+            jsonResponse(['success' => false, 'errorMessage' => $action === 'login' ? 'Unknown organization' : 'Link not found', 'errorCode' => 'tenant'], $action === 'login' ? 400 : 404);
+        }
+        Tenant::set($tn);
+    } else {
+        $tn = tokenTenant();
+        if (!$tn || !Tenant::find($tn)) jsonResponse(['success' => false, 'errorMessage' => 'Unauthorized', 'errorCode' => 401], 401);
+        Tenant::set($tn);
+    }
+    $pdo = Database::getInstance()->getConnection();
+} catch (RuntimeException $e) {
+    error_log('[tenant] ' . $e->getMessage());
+    jsonResponse(['success' => false, 'errorMessage' => 'Service unavailable'], 503);
+}
+
+// 免登录：登录本身 + 职位投递链接（候选人免登录看职位、投简历；handler 内只认 token，限流见 includes/recruit_apply.php）
 if (!in_array($action, $publicActions, true)) {
     $userId = verifyToken();
     if (!$userId) jsonResponse(['success' => false, 'errorMessage' => 'Unauthorized', 'errorCode' => 401], 401);

@@ -125,8 +125,8 @@ export function guaranteeText(p: any, t: T): string {
 }
 
 /**
- * 行业配色 + 手绘插画（「要有颜色、有图标，不要像呆板的数据」）。
- * 插画在 public/recruit/art/ind-<行业码>.jpg（scripts/ops/gen_recruit_art.js 生成，点缀色与这里同色），白底用 multiply 融掉。
+ * 行业配色 + 图标（「要有颜色、有图标，不要像呆板的数据」）。
+ * 图标在 public/recruit/art/ind-<行业码>.svg（frontend/scripts/gen-art.mjs 生成，颜色与这里同色）。
  */
 export const INDUSTRY_COLOR: Record<string, string> = {
   it_software: '#2F6BFF', datacenter_infra: '#00A3BF', telecom: '#7B61FF', manufacturing: '#FF7A45', mining_energy: '#FAAD14',
@@ -136,7 +136,7 @@ export const INDUSTRY_COLOR: Record<string, string> = {
 };
 export const industryColor = (code?: string) => INDUSTRY_COLOR[code || ''] || '#BFBFBF';
 export const IndustryArt: React.FC<{ code?: string; size?: number; style?: React.CSSProperties }> = ({ code, size = 40, style }) => (
-  <img src={`/recruit/art/ind-${INDUSTRY_COLOR[code || ''] ? code : 'other'}.jpg`} alt="" width={size} height={size}
+  <img src={`/recruit/art/ind-${INDUSTRY_COLOR[code || ''] ? code : 'other'}.svg`} alt="" width={size} height={size}
     style={{ mixBlendMode: 'multiply', objectFit: 'contain', flexShrink: 0, ...style }} onError={(e) => { (e.target as HTMLImageElement).style.visibility = 'hidden'; }} />
 );
 /** 热度 0–3 级（企业库卡片的火苗）：看这家公司下有多少人、在职多少、正在我们流程里多少 */

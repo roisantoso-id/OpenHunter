@@ -4,6 +4,7 @@ export default {
   'pages.login.submit': "登录",
   'pages.login.success': "登录成功！",
   'pages.login.failure': "登录失败，请检查用户名和密码",
+  'pages.login.tenant.placeholder': "组织标识（只有一个组织时可不填）",
   'pages.login.username.placeholder': "请输入用户名",
   'pages.login.username.required': "请输入用户名",
   'pages.login.password.placeholder': "请输入密码",

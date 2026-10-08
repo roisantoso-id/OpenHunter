@@ -2,7 +2,7 @@ import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
   hash: true,
-  favicons: ['/recruit/art/mark-64.jpg'],
+  favicons: ['/recruit/art/mark-64.svg'],
   esbuildMinifyIIFE: true,
   antd: {
     configProvider: { theme: { components: { Cascader: { dropdownHeight: 360 } } } },

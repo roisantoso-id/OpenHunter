@@ -20,7 +20,7 @@ import { showErr, STAGE_COLOR } from '../common';
 const { Text } = Typography;
 const BRAND = '#1a2ad6';
 const PALETTE = ['#1a2ad6', '#13c2c2', '#fa8c16', '#52c41a', '#eb2f96', '#722ed1', '#faad14', '#8c8c8c'];
-/** KPI 卡插图（components/StatCard 的手绘插图名） */
+/** KPI 卡插图（components/StatCard 的插图名） */
 const KPI_ART: Record<string, string> = {
   resumes: 'inbox', new_candidates: 'newPerson', strong: 'star', submitted: 'recommend', interviewing: 'interview',
   hired: 'placed', followups: 'followup', ai: 'aicost',
@@ -94,7 +94,7 @@ const Stats: React.FC = () => {
         <Text type="secondary">{t('pages.recruit.stats.hint')}</Text>
       </Space>
 
-      {/* ① KPI：与其它招聘页同一套手绘插图统计卡（StatCard） */}
+      {/* ① KPI：与其它招聘页同一套插图统计卡（StatCard） */}
       <Row gutter={[12, 12]} style={{ marginBottom: 12 }}>
         {kpis.map((x) => (
           <Col key={x.key} xs={12} md={6} xl={3}>

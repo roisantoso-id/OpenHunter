@@ -74,18 +74,18 @@ const Workbench: React.FC = () => {
   return (
     <div>
       <style>{ROW_CSS}</style>
-      {/* 模块标识横幅（手绘风）：徽章 + 模块名 + 一句话流程，右侧招聘顾问与 AI 小机器人。
+      {/* 模块标识横幅（图标风）：徽章 + 模块名 + 一句话流程，右侧招聘顾问与 AI 小机器人。
           米色底 + multiply 把插图的白底融掉；窄屏隐藏右侧插图 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, background: '#FBF8F2',
         border: '1px solid #EFE6D3', borderRadius: 12, padding: '8px 16px', marginBottom: 12, overflow: 'hidden', minHeight: 96 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-          <img src="/recruit/art/mark.jpg" alt="" width={60} height={60} style={{ mixBlendMode: 'multiply', flexShrink: 0 }} />
+          <img src="/recruit/art/mark.svg" alt="" width={60} height={60} style={{ mixBlendMode: 'multiply', flexShrink: 0 }} />
           <div style={{ minWidth: 0 }}>
             <div style={{ fontSize: 20, fontWeight: 700, color: '#1B1B1B', lineHeight: 1.3 }}>{t('menu.recruit')}</div>
             <Text type="secondary" style={{ fontSize: 12 }}>{t('pages.recruit.wb.brandLine')}</Text>
           </div>
         </div>
-        <img className="recruit-hero" src="/recruit/art/hero.jpg" alt="" style={{ height: 110, mixBlendMode: 'multiply', flexShrink: 0, margin: '-8px 0' }} />
+        <img className="recruit-hero" src="/recruit/art/hero.svg" alt="" style={{ height: 110, mixBlendMode: 'multiply', flexShrink: 0, margin: '-8px 0' }} />
         <style>{'@media (max-width: 900px) { .recruit-hero { display: none } }'}</style>
       </div>
       <Space style={{ marginBottom: 12 }} align="center">

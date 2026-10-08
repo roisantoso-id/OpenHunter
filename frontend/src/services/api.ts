@@ -127,8 +127,8 @@ export const recruitSetCompanyEnrich = (enabled: boolean) => recruitPost('recrui
 export const recruitJobLink = (job_id: number) => recruitGet('recruitJobLink', { job_id });
 export const recruitRevokeJobLink = (job_id: number) => recruitPost('recruitRevokeJobLink', { job_id });
 // ⛔ 免登录的两个用原生 fetch：不带登录态、不走全局拦截（候选人没登录，拦截器会把人跳去登录页）
-export async function recruitApplyInfo(token: string, lang: string, first = false) {
-  const res = await fetch(`${API_BASE_URL}?action=recruitApplyInfo&token=${encodeURIComponent(token)}&lang=${encodeURIComponent(lang)}${first ? '&first=1' : ''}`);
+export async function recruitApplyInfo(token: string, lang: string, first = false, tenant = '') {
+  const res = await fetch(`${API_BASE_URL}?action=recruitApplyInfo&token=${encodeURIComponent(token)}&lang=${encodeURIComponent(lang)}${first ? '&first=1' : ''}${tenant ? `&tenant=${encodeURIComponent(tenant)}` : ''}`);
   return res.json();
 }
 export async function recruitApplySubmit(fd: FormData) {

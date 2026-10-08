@@ -20,7 +20,9 @@ const JobApplyLink: React.FC<{ t: T; job: any }> = ({ t, job }) => {
     try { const r = await recruitJobLink(Number(job.id)); if (r?.success) setLink(r.data); else { showErr(r, t); setOpen(false); } }
     finally { setLoading(false); }
   };
-  const url = link ? `${window.location.origin}/apply/${link.slug ? `${link.slug}-` : ''}${link.token}` : '';   // 职位名 + 8 位码，只有码是凭证
+  let tenant = '';
+  try { tenant = localStorage.getItem('oh_tenant') || ''; } catch { /* ignore */ }
+  const url = link ? `${window.location.origin}/apply/${link.slug ? `${link.slug}-` : ''}${link.token}${tenant ? `?t=${encodeURIComponent(tenant)}` : ''}` : '';   // 职位名 + 8 位码，只有码是凭证
   const panel = (
     <div style={{ width: 420 }} onClick={(e) => e.stopPropagation()}>
       <Spin spinning={loading}>

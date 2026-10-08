@@ -298,7 +298,7 @@ function uploadAttachment($pdo, string $localTmp, string $origName, string $cate
         return ['path' => $fullPath, 'name' => $safeOrig];
     }
     // 本地 fallback：写到 data/uploads/{category}/{scope}/
-    $subdir = trim($category . '/' . $scope, '/');
+    $subdir = Tenant::slug() . '/' . trim($category . '/' . $scope, '/');
     $dir = __DIR__ . '/../data/uploads/' . $subdir;
     if (!is_dir($dir)) mkdir($dir, 0755, true);
     $safeName = preg_replace('/[^A-Za-z0-9._-]/', '_', $safeOrig);
