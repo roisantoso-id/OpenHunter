@@ -1,0 +1,19 @@
+# dependencies & builds
+node_modules/
+frontend/dist/
+frontend/.umi/
+frontend/.umi-production/
+backend/vendor/
+
+# runtime data — never commit
+.env
+*.env.local
+backend/data/
+*.db
+*.sqlite
+*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
