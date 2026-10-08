@@ -1,0 +1,31 @@
+{
+  "name": "openhunter-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenHunter - open-source AI recruiting / headhunting workspace (frontend)",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "dev": "max dev",
+    "build": "max build",
+    "start": "npm run dev",
+    "postinstall": "max setup",
+    "check:locales": "node scripts/check-locales.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@ant-design/pro-components": "^2.8.10",
+    "@umijs/max": "^4.6.42",
+    "antd": "^5.29.3",
+    "dayjs": "^1.11.13",
+    "echarts": "^6.1.0",
+    "html2pdf.js": "^0.10.3",
+    "pdfjs-dist": "^4.8.69",
+    "recharts": "^3.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}

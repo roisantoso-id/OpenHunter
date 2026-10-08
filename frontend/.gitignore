@@ -1,0 +1,10 @@
+node_modules
+dist
+.umi
+.umi-production
+.umi-test
+src/.umi
+src/.umi-production
+src/.umi-test
+.DS_Store
+*.log
